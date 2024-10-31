@@ -3,6 +3,8 @@ import platform
 import json
 import sys
 import os
+from loguru import logger
+
 
 def to_error_message(errs):
   """
@@ -47,13 +49,11 @@ def create_release(version, channel, name=None, tag=None):
   if 'errors' in release:
     errs = release['errors']
 
-    print(f'[error] Release failed: errors={to_error_message(errs)}',
-          file=sys.stderr)
+    logger.error(f'[error] Release failed: errors={to_error_message(errs)}')
 
     sys.exit(1)
   else:
-    print(f"[info] Created: release={release['data']['id']} link={release['data']['links']['self']}",
-          file=sys.stdout)
+    logger.info(f"[info] Created: release={release['data']['id']} link={release['data']['links']['self']}")
 
   return release['data']
 
@@ -76,13 +76,11 @@ def publish_release(release):
   if 'errors' in release:
     errs = release['errors']
 
-    print(f'[error] Publish failed: errors={to_error_message(errs)}',
-          file=sys.stderr)
+    logger.error(f'[error] Publish failed: errors={to_error_message(errs)}')
 
     sys.exit(1)
   else:
-    print(f"[info] Published: release={release['data']['id']} link={release['data']['links']['self']}",
-          file=sys.stdout)
+    logger.info(f"[info] Published: release={release['data']['id']} link={release['data']['links']['self']}")
 
   return release['data']
 
@@ -124,13 +122,11 @@ def upload_artifact_for_release(release, filename, filetype, filesize, platform,
   if 'errors' in artifact:
     errs = artifact['errors']
 
-    print(f'[error] Upload failed: errors={to_error_message(errs)}',
-          file=sys.stderr)
+    logger.error(f'[error] Upload failed: errors={to_error_message(errs)}')
 
     sys.exit(1)
   else:
-    print(f"[info] Uploaded: artifact={artifact['data']['id']} link={artifact['data']['links']['self']}",
-          file=sys.stdout)
+    logger.info(f"[info] Uploaded: artifact={artifact['data']['id']} link={artifact['data']['links']['self']}")
 
   # Follow redirect and upload file to storage provider
   upload_url = res.headers['location']
