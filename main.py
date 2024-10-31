@@ -1,10 +1,10 @@
-import requests
-import platform
 import json
-import sys
-import os
 from loguru import logger
-
+import os
+from pathlib import Path
+import platform
+import requests
+import sys
 
 def to_error_message(errs):
   """
@@ -139,36 +139,40 @@ def upload_artifact_for_release(release, filename, filetype, filesize, platform,
 
   return artifact['data']
 
-release = create_release(
-  name='Python Release v1',
-  version='1.0.0',
-  channel='stable'
-)
 
-with open('examples/hello-world.txt', mode='r') as f:
-  stat = os.stat(f.name)
-
-  artifact = upload_artifact_for_release(
-    filename=f.name,
-    filesize=stat.st_size,
-    filetype='txt',
-    platform=f"{platform.system()} {platform.release()}",
-    arch=platform.processor(),
-    release=release,
-    data=f
+if __name__ == '__main__':
+  release = create_release(
+    name='keygen-hello-world',
+    version='1.0.0',
+    channel='stable'
   )
 
-with open('examples/hello-mars.txt', mode='r') as f:
-  stat = os.stat(f.name)
+  with open('examples/keygen-hello-world/dist/keygen_hello_world-1.0.0-py3-none-any.whl', mode='rb') as f:
+    filename = Path(f.name).name
+    stat = os.stat(f.name)
 
-  artifact = upload_artifact_for_release(
-    filename=f.name,
-    filesize=stat.st_size,
-    filetype='txt',
-    platform=f"{platform.system()} {platform.release()}",
-    arch=platform.processor(),
-    release=release,
-    data=f
-  )
+    artifact = upload_artifact_for_release(
+      filename=filename,
+      filesize=stat.st_size,
+      filetype='whl',
+      platform=f"{platform.system()} {platform.release()}",
+      arch=platform.processor(),
+      release=release,
+      data=f
+    )
 
-publish_release(release)
+  with open('examples/keygen-hello-world/dist/keygen-hello-world-1.0.0.tar.gz', mode='rb') as f:
+    filename = Path(f.name).name
+    stat = os.stat(f.name)
+
+    artifact = upload_artifact_for_release(
+      filename=filename,
+      filesize=stat.st_size,
+      filetype='tar.gz',
+      platform=f"{platform.system()} {platform.release()}",
+      arch=platform.processor(),
+      release=release,
+      data=f
+    )
+
+  publish_release(release)
