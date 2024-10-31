@@ -9,14 +9,16 @@ using Keygen's distribution API.
 First up, configure a few environment variables:
 
 ```bash
-# Your Keygen product token. You can generate a product token via the API
-# or your admin dashboard.
+# Your Keygen product token
+# You can generate a product token via, 
+# - your admin dashboard here: https://app.keygen.sh/tokens
+# - the API: https://keygen.sh/docs/api/tokens/#tokens-create
 export KEYGEN_PRODUCT_TOKEN="A_KEYGEN_PRODUCT_TOKEN"
 
-# Your Keygen account ID. Find yours at https://app.keygen.sh/settings.
+# Your Keygen account ID. Find yours at https://app.keygen.sh/settings
 export KEYGEN_ACCOUNT_ID="YOUR_KEYGEN_ACCOUNT_ID"
 
-# Your Keygen product ID.
+# Your Keygen product ID
 export KEYGEN_PRODUCT_ID="YOUR_KEYGEN_ACCOUNT_ID"
 ```
 
